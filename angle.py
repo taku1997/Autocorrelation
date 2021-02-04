@@ -1,4 +1,5 @@
 import json
+import os
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
@@ -6,6 +7,14 @@ from matplotlib import pyplot as plt
 
 list_angle = []
 acorr_data = [1]
+
+def count_file():
+  path = "./test_json"
+  files = os.listdir(path)
+  # count = len(files)
+  count = 40
+  print(count)
+
 
 #角度計算の関する
 def angle(a,b,c):
@@ -24,7 +33,7 @@ def angle(a,b,c):
 #自己相関の求め方
 def autocorrelation(data,k):
   #yの平均
-  y_avg = np.mean(data
+  y_avg = np.mean(data)
   #分子の計算
   sum_of_covariance = 0
   for i in range(k+1,len(data)):
@@ -42,9 +51,10 @@ def autocorrelation(data,k):
 
 if __name__ == '__main__':
   
+   fileNumber = count_file()
   #1個目の波形--------------------------------------
-  for i in range(40):
-    filename = 'test_' + str(i).zfill(12) + '_keypoints.json'
+  for i in range(len(fileNumber)):
+    filename = './test_json/test_' + str(i).zfill(12) + '_keypoints.json'
     file = pd.read_json(filename)
     
     #右関節の座標
@@ -62,7 +72,7 @@ if __name__ == '__main__':
     list_angle.append(angle(a,b,c))
   
   #自己相関---------------------------------------
-  for i in range(len(list_angle)-1):
+  for i in range(len(fileNumber)-1):
     acorr_data.append(autocorrelation(list_angle,i))
 
   #グラフの表示-------------------------------------
